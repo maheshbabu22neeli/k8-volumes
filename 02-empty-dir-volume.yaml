@@ -13,6 +13,7 @@ spec:
 
     - image: almalinux:9
       name: almalinux
+      command: ["sleep", "2000"]
       volumeMounts:
         - name: nginx-cache
           mountPath: /mnt/nginx-cache
