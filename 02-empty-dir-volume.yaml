@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-empty-dir-volume
+  namespace: roboshop
+spec:
+  containers:
+    - image: nginx
+      name: nginx
+      volumeMounts:
+        - name: nginx-cache
+          mountPath: /var/log/nignx
+
+    - image: almalinux:9
+      name: almalinux
+      volumeMounts:
+        - name: nginx-cache
+          mountPath: /mnt/nginx-cache
+          readOnly: true
+
+  # When container creates, below nginx-cache volume will also be created
+  # This volume will be shared between both containers,
+  # so any data written by nginx container to /var/log/nignx will be available in almalinux container at /mnt/nginx-cache
+  volumes:
+    - name: nginx-cache
+      emptyDir:
+        sizeLimit: 500Mi
