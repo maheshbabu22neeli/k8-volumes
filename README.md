@@ -41,3 +41,18 @@ drwxr-xr-x. 1 root root  25 Apr 24 10:23 ..
 [root@test-empty-dir-volume nginx-cache]#
 
 ```
+- Empty dir will in case of side-car containers to read from one container and write to another container.
+
+
+## Host Path
+- A container can access the file system of the node where it is running using hostPath volume.
+- Host path volume mounts a file or directory from the host node's filesystem into a pod. 
+- This is not that secure to give access to the host file system to the container, so use it with caution.
+- But some case, if we want to see the nodes logs we allow pods and container to use hostpath in read only mode.
+- Daemonset is used to deploy the pods on all the nodes, so that we can see the logs of all the nodes.
+- While worker nodes added, deamonset will automatically deploy the pods on the new nodes and we can see the logs of new nodes as well.
+```shell
+
+
+
+```

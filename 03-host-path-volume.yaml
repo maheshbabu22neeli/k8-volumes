@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: host-path-volume
+  namespace: roboshop
+spec:
+  containers:
+    - name: docker-client
+      image: docker:24-cli
+      command: ["sleep", "3000"]
+      volumeMounts:
+        - name: docker-socket
+          mountPath: /var/run/docker.sock  # Same path inside container
+
+  volumes:
+    - name: docker-socket
+      hostPath:
+        path: /var/run/docker.sock         # Actual path on the NODE, where this disk already having logs of docker
+        type: Socket
