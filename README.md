@@ -15,3 +15,29 @@ k8-volumes
 - Volume is shared between all the containers inside the POD, Volume is stored in the node where POD is running
 - Volume is not persistent, data will be lost when POD is deleted
 - Use case: Temporary data, cache, scratch space, etc.
+```shell
+$ kubectl apply -f empty-dir-volume.yaml
+
+Open k9s tool and go to pods.
+By selecting the pod `test-empty-dir-volume` and then select the container `almalinux` and then select the shell, you can see the below output.
+
+<<K9s-Shell>> Pod: roboshop/test-empty-dir-volume | Container: almalinux
+[root@test-empty-dir-volume /]# cd /mnt/nginx-cache/
+[root@test-empty-dir-volume nginx-cache]# ls -la
+total 4
+drwxrwxrwx. 2 root root  41 Apr 24 10:23 .
+drwxr-xr-x. 1 root root  25 Apr 24 10:23 ..
+-rw-r--r--. 1 root root   0 Apr 24 10:23 access.log
+-rw-r--r--. 1 root root 509 Apr 24 10:23 error.log
+[root@test-empty-dir-volume nginx-cache]# cat error.log
+2026/04/24 10:23:17 [notice] 1#1: using the "epoll" event method
+2026/04/24 10:23:17 [notice] 1#1: nginx/1.29.8
+2026/04/24 10:23:17 [notice] 1#1: built by gcc 14.2.0 (Debian 14.2.0-19)
+2026/04/24 10:23:17 [notice] 1#1: OS: Linux 6.12.79-101.147.amzn2023.x86_64
+2026/04/24 10:23:17 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 65536:1048576
+2026/04/24 10:23:17 [notice] 1#1: start worker processes
+2026/04/24 10:23:17 [notice] 1#1: start worker process 30
+2026/04/24 10:23:17 [notice] 1#1: start worker process 31
+[root@test-empty-dir-volume nginx-cache]#
+
+```
