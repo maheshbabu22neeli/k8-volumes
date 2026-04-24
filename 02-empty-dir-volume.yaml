@@ -9,7 +9,7 @@ spec:
       name: nginx
       volumeMounts:
         - name: nginx-cache
-          mountPath: /var/log/nignx
+          mountPath: /var/log/nginx
 
     - image: almalinux:9
       name: almalinux
