@@ -52,7 +52,13 @@ drwxr-xr-x. 1 root root  25 Apr 24 10:23 ..
 - Daemonset is used to deploy the pods on all the nodes, so that we can see the logs of all the nodes.
 - While worker nodes added, deamonset will automatically deploy the pods on the new nodes and we can see the logs of new nodes as well.
 ```shell
+$ kubectl apply -f 03-host-path-volume.yaml
+daemonset.apps/fluentd-elasticsearch created
 
-
+root@fluentd-elasticsearch-ckrgq:/# cd /var/log
+root@fluentd-elasticsearch-ckrgq:/var/log# ls
+README  audit           btmp    cloud-init-output.log  containers       dnf.log      hawkey.log  lastlog  private   wtmp
+amazon  aws-routed-eni  chrony  cloud-init.log         dnf.librepo.log  dnf.rpm.log  journal     pods     tallylog
+root@fluentd-elasticsearch-ckrgq:/var/log#
 
 ```
