@@ -73,7 +73,7 @@ Here we have two types of provisioning
 - Static Provisioning.
 - Dynamic Provisioning.
 
-## EBS Static Provisioning
+# EBS Static Provisioning
 - EBS full form is Elastic Block Store, this is a block storage service provided by AWS.
 - EBS volume can be attached to only one node at a time.
 - EBS is nothing but hard disk, and it should be so near to the server.
@@ -149,6 +149,14 @@ persistentvolumeclaims              pvc          v1                             
 persistentvolumes                   pv           v1                                false        PersistentVolume
 ```
 
+
+# EBS Dynamic Provisioning
+- By using dynamic provisioning, we don't have to create EBS volume and PV manually, it will be created automatically when PVC is created.
+- To use dynamic provisioning, we have to create `Storage Class`.
+- Storage Class is a cluster level resource which defines the provisioner and parameters for dynamic provisioning.
+- Storage will create EBS volume dynamically when PVC is created, and it will delete the EBS volume when PVC is deleted.
+
+- 
 
 ## EFS Static Provisioning
 - EFS full form is Elastic File System, this is a file storage service provided by AWS.

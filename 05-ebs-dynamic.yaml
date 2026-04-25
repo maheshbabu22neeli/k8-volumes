@@ -1,0 +1,39 @@
+# SC is admin task
+# SC will create the volume on demand when PVC is created
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: roboshop-ebs         # assume we are creating the EBS for roboshop application using StorageClass
+provisioner: ebs.csi.aws.com  # these drivers will take care of create the ebs volume on demand when PVC is created
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-dynamic
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: roboshop-ebs
+  resources:
+    requests:
+      storage: 4Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ebs-dynamic-app
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      volumeMounts:
+        - name: html-data
+          mountPath: /usr/share/nginx/html
+  nodeSelector:
+    topology.kubernetes.io/zone: us-east-1d
+  volumes:
+    - name: html-data
+      persistentVolumeClaim:
+        claimName: ebs-dynamic
