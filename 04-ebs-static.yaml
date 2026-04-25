@@ -13,3 +13,17 @@ spec:
     driver: ebs.csi.aws.com
     fsType: ext4
     volumeHandle: vol-01ae7388ae0bb985e   # create EBS disk in AZ's under us-east-1c
+---
+# This manifest creates a PersistentVolumeClaim (PVC) that binds to the above PV.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-static-pvc
+spec:
+  storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
+  volumeName: ebs-static # This is  the PV name
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi

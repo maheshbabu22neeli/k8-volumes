@@ -80,6 +80,38 @@ Here we have two types of provisioning
 - EBS is suitable for OS and databases, because of its low latency and high performance.
 - EBS volumes should create only AZ's where our nodes are running.
 
+## Reclaim Policy
+- Reclaim policy is a policy which defines what will happen to the PV when PVC is deleted
+- There are three types of reclaim policy:
+- `Retain`: When Node is deleted, PV will not be deleted, it will be retained and can be reused by another PVC.
+- `Delete`: When Node is deleted, PV will be deleted.
+- `Recycle`: When Node is deleted, PV will be recycled and can be reused by another PVC,
+but this is not recommended because it will delete all the data in the PV.
+
+
+### Steps:
+1. Create the disk in same AZ where our nodes are running, and note down the volume id.
+Manually created the EBS volume where id is - vol-01ae7388ae0bb985e
+
+2. Install the EBS CSI Driver in the cluster, this is a plugin which helps to use EBS volumes in Kubernetes.
+`kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.59"`
+
+3. To mount the EBS volume, Nodes should have EBS permissions, so we have to create a IAM policy.
+   Go to Node IAM security role and attach `AmazonEBSCSIDriverPolicy` policy to the node instance role.
+![img.png](images/img.png)
+
+4. Now, create PV `kubectl apply -f  04-ebs-static.yaml`
+````
+$ kubectl get pv
+NAME         CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
+ebs-static   2Gi        RWO            Retain           Available                          <unset>                          15s
+````
+5. Once the PV is created, we have to claim that PV by creating PVC
+```shell
+$ kubectl apply -f 04-ebs-static.yaml
+```
+
+
 
 ## EFS Static Provisioning
 - EFS full form is Elastic File System, this is a file storage service provided by AWS.
