@@ -27,3 +27,22 @@ spec:
   resources:
     requests:
       storage: 2Gi
+---
+# This manifest creates a Pod that mounts the PVC to serve static content using nginx.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ebs-static-app
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      volumeMounts:
+        - name: html-data
+          mountPath: /usr/share/nginx/html
+  nodeSelector:
+    topology.kubernetes.io/zone: us-east-1c # Ensure the Pod is scheduled in the same AZ as the EBS volume
+  volumes:
+    - name: html-data
+      persistentVolumeClaim:
+        claimName: ebs-static-pvc   # This is the PVC name

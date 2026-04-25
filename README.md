@@ -108,8 +108,19 @@ ebs-static   2Gi        RWO            Retain           Available               
 ````
 5. Once the PV is created, we have to claim that PV by creating PVC
 ```shell
-$ kubectl apply -f 04-ebs-static.yaml
+$ kubectl apply -f  04-ebs-static.yaml
+persistentvolume/ebs-static unchanged
+persistentvolumeclaim/ebs-static-pvc created
+
+$ kubectl get pvc
+NAME             STATUS   VOLUME       CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+ebs-static-pvc   Bound    ebs-static   2Gi        RWO                           <unset>                 20s
+
+
+
 ```
+
+6. So, basically. disk/ebs is attached to PV, PV is attahed to PVC and PVC is attached to the POD, so that POD can use the disk for storage.
 
 
 
