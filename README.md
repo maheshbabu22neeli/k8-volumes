@@ -100,13 +100,13 @@ Manually created the EBS volume where id is - vol-01ae7388ae0bb985e
    Go to Node IAM security role and attach `AmazonEBSCSIDriverPolicy` policy to the node instance role.
 ![img.png](images/img.png)
 
-4. Now, create PV `kubectl apply -f  04-ebs-static.yaml`
+4. Now, create PV `kubectl apply -f  04-ebs-static.yaml`. PV is cluster level resource.
 ````
 $ kubectl get pv
 NAME         CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
 ebs-static   2Gi        RWO            Retain           Available                          <unset>                          15s
 ````
-5. Once the PV is created, we have to claim that PV by creating PVC
+5. Once the PV is created, we have to claim that PV by creating PVC. PVC is namespace level resource.
 ```shell
 $ kubectl apply -f  04-ebs-static.yaml
 persistentvolume/ebs-static unchanged
@@ -116,12 +116,38 @@ $ kubectl get pvc
 NAME             STATUS   VOLUME       CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
 ebs-static-pvc   Bound    ebs-static   2Gi        RWO                           <unset>                 20s
 
+```
+6. Now create the POD to use the PVC
+```shell
+$ kubectl apply -f  04-ebs-static.yaml
+persistentvolume/ebs-static unchanged
+persistentvolumeclaim/ebs-static-pvc unchanged
+pod/ebs-static-app created
 
+$ kubectl describe pod ebs-static-app
+-----
+-----
+-----
+Events:
+  Type    Reason                  Age   From                     Message
+  ----    ------                  ----  ----                     -------
+  Normal  Scheduled               88s   default-scheduler        Successfully assigned default/ebs-static-app to ip-192-168-44-77.ec2.internal
+  Normal  SuccessfulAttachVolume  86s   attachdetach-controller  AttachVolume.Attach succeeded for volume "ebs-static"
+  Normal  Pulling                 84s   kubelet                  spec.containers{nginx}: Pulling image "nginx"
+  Normal  Pulled                  82s   kubelet                  spec.containers{nginx}: Successfully pulled image "nginx" in 1.935s (1.935s including waiting). Image size: 62964342 bytes.
+  Normal  Created                 82s   kubelet                  spec.containers{nginx}: Created container: nginx
+  Normal  Started                 82s   kubelet                  spec.containers{nginx}: Started container nginx
 
 ```
 
-6. So, basically. disk/ebs is attached to PV, PV is attahed to PVC and PVC is attached to the POD, so that POD can use the disk for storage.
-
+7. So, basically. disk/ebs is attached to PV, PV is attached to PVC and PVC is attached to the POD, so that POD can use the disk for storage.
+8. So, whatever POD writes to the file it will always be availble in desk even the POD deleted.
+9. To know more about PV and PVC, we can use below command to see the PV and PVC resources in Kubernetes cluster.
+```shell
+$ kubectl api-resources | grep pv
+persistentvolumeclaims              pvc          v1                                true         PersistentVolumeClaim
+persistentvolumes                   pv           v1                                false        PersistentVolume
+```
 
 
 ## EFS Static Provisioning
