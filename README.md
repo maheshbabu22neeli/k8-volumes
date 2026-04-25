@@ -2,10 +2,9 @@
 k8-volumes
 
 
-# Volumes
+# Ephemeral Volume
 1. Empty Dir
 2. Host Path
-
 
 # Empty Dir
 - Create volume at POD level
@@ -62,3 +61,34 @@ amazon  aws-routed-eni  chrony  cloud-init.log         dnf.librepo.log  dnf.rpm.
 root@fluentd-elasticsearch-ckrgq:/var/log#
 
 ```
+
+# Permanent Volume
+Permanent volumes can be achieved by creating below 3 resources:
+- Persistent Volume                     -> It is an equal to physical storage in the cluster, it is a cluster resource.
+- Persistent Volume Claim 
+- Storage Class
+
+## Provisioning
+Here we have two types of provisioning
+- Static Provisioning.
+- Dynamic Provisioning.
+
+## EBS Static Provisioning
+- EBS full form is Elastic Block Store, this is a block storage service provided by AWS.
+- EBS volume can be attached to only one node at a time.
+- EBS is nothing but hard disk, and it should be so near to the server.
+- EBS is suitable for OS and databases, because of its low latency and high performance.
+- EBS volumes should create only AZ's where our nodes are running.
+
+
+## EFS Static Provisioning
+- EFS full form is Elastic File System, this is a file storage service provided by AWS.
+- EFS volume can be attached to multiple nodes at a time.
+- EFS is nothing but a shared file system or a cloud drive, and it can be accessed from anywhere.
+
+
+
+
+
+
+

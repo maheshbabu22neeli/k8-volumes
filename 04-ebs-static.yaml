@@ -1,0 +1,15 @@
+# This manifest creates a PersistentVolume (PV) that uses an existing EBS volume.
+# Make sure to replace `vol-01ae7388ae0bb985e` with the actual volume ID of your EBS volume.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ebs-static
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 2Gi # should be less than or equal to your disk size
+  csi:
+    driver: ebs.csi.aws.com
+    fsType: ext4
+    volumeHandle: vol-01ae7388ae0bb985e   # create EBS disk in AZ's under us-east-1c
