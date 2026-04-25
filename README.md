@@ -156,6 +156,27 @@ persistentvolumes                   pv           v1                             
 - Storage Class is a cluster level resource which defines the provisioner and parameters for dynamic provisioning.
 - Storage will create EBS volume dynamically when PVC is created, and it will delete the EBS volume when PVC is deleted.
 
+1. Run `kubectl apply -f 05-ebs-dynamic.yaml`, this create POD, PVC and Storage Class at a time.
+```shell
+$ kubectl apply -f 05-ebs-dynamic.yaml
+storageclass.storage.k8s.io/roboshop-ebs created
+persistentvolumeclaim/ebs-dynamic created
+pod/ebs-dynamic-app created
+
+$ kubectl get pvc
+NAME             STATUS    VOLUME       CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+ebs-dynamic      Pending                                          roboshop-ebs   <unset>                 114s
+ebs-static-pvc   Bound     ebs-static   2Gi        RWO                           <unset>                 44m
+
+
+$ kubectl get sc
+NAME           PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+gp2            kubernetes.io/aws-ebs   Delete          WaitForFirstConsumer   false                  153m
+roboshop-ebs   ebs.csi.aws.com         Retain          WaitForFirstConsumer   false                  85s
+
+
+
+```
 - 
 
 ## EFS Static Provisioning

@@ -11,7 +11,7 @@ reclaimPolicy: Retain
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ebs-dynamic
+  name: ebs-dynamic-pvc
 spec:
   accessModes:
     - ReadWriteOnce
@@ -36,4 +36,4 @@ spec:
   volumes:
     - name: html-data
       persistentVolumeClaim:
-        claimName: ebs-dynamic
+        claimName: ebs-dynamic-pvc
