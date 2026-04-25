@@ -165,7 +165,7 @@ pod/ebs-dynamic-app created
 
 $ kubectl get pvc
 NAME             STATUS    VOLUME       CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
-ebs-dynamic      Pending                                          roboshop-ebs   <unset>                 114s
+ebs-dynamic-pvc      Pending                                          roboshop-ebs   <unset>                 114s
 ebs-static-pvc   Bound     ebs-static   2Gi        RWO                           <unset>                 44m
 
 
