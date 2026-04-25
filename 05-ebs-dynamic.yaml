@@ -1,5 +1,6 @@
 # SC is admin task
 # SC will create the volume on demand when PVC is created
+# EBS volume will automatically get created when PVC is created
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -32,7 +33,7 @@ spec:
         - name: html-data
           mountPath: /usr/share/nginx/html
   nodeSelector:
-    topology.kubernetes.io/zone: us-east-1c
+    topology.kubernetes.io/zone: us-east-1c  # Ensure the Pod is scheduled in the same AZ as the EBS volume
   volumes:
     - name: html-data
       persistentVolumeClaim:

@@ -174,8 +174,6 @@ NAME           PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      AL
 gp2            kubernetes.io/aws-ebs   Delete          WaitForFirstConsumer   false                  153m
 roboshop-ebs   ebs.csi.aws.com         Retain          WaitForFirstConsumer   false                  85s
 
-
-
 ```
 - 
 
